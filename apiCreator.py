@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field #type: ignore
 from fastapi import FastAPI, HTTPException #type: ignore
 import importlib.util
 from typing import List
+import os 
 
 def create_api(pydantic_script, database_name):
     """
@@ -9,18 +10,18 @@ def create_api(pydantic_script, database_name):
 
     Arguments:
         `pydantic_script` (str): Models script name.
-    Returns: 
+    Returns:    
         (str): Name of created api script.
     """
     models = load_pydantic_models(pydantic_script)
-
     models_names = ", ".join([model.__name__ for model in models])
 
+    converted_pydantic_script_string = pydantic_script.replace("\\", ".")
     #import
     script = """from fastapi import FastAPI, HTTPException\n"""
     script += """from datetime import datetime, timedelta\n"""
     script += """from decimal import Decimal\n"""
-    script += f"""from {pydantic_script[:-3]} import {models_names}\n"""
+    script += f"""from {converted_pydantic_script_string[:-3]} import {models_names}\n"""
     script += """import mysql.connector\napp = FastAPI()\n\n"""
     #db params
     script += """db_config = {\n"""
@@ -52,7 +53,11 @@ def create_api(pydantic_script, database_name):
         script += delete(model)
     
     #write into new script
-    api_script_name = database_name + "crud_api.py"
+    directory = "crud_api"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+    api_script_name = os.path.join(directory, f"{database_name}_crud_api.py")
 
     with open(api_script_name, "w") as file:
         file.write(script)
@@ -126,7 +131,7 @@ def create(model):
     #SQL query
     string += """\n"""
     string += """\ttry:\n"""
-    string += f"""\t\t{'\n\t\t'.join(variables_formated)}\n"""
+    string += "\t\t{}\n".format('\n\t\t'.join(variables_formated))
     string += """\t\tquery = '''\n"""
     string += f"""\t\tINSERT INTO {model.__name__} ({', '.join(variables_names)})\n"""
     string += f"""\t\tVALUES ({', '.join(['%s'] * len(variables_names))})\n"""
@@ -244,7 +249,7 @@ def update(model):
     string += """\t'''\n"""
     string += f"""\tEdit {model.__name__} \n"""
     string += """\tArgument: \n"""
-    string += f"""\t\t{'.\n\t\t'.join(variables)}.\n""" 
+    string += "\t\t{}\n".format('\n\t\t'.join(variables))
     string += """\t'''\n\n"""
 
     #Function body

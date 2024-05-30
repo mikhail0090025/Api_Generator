@@ -1,0 +1,4 @@
+fastapi
+flask
+mysql-connector-python
+pydantic

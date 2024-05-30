@@ -7,8 +7,8 @@ from pydanticModels import process_models
 from apiCreator import create_api
 import server
 
-#if __name__ == "__main__":
-    #server.start_server()
+if __name__ == "__main__":
+    server.start_server()
 def create_database(host, user, password, database_name, sql_code: str): 
     """ 
     Creates database. 
@@ -148,7 +148,7 @@ password = ''
 database_name = 'newdb' 
  
 sql_code_body = """ 
- 
+
  
  
 -- Create the Manufacturers table 
@@ -235,6 +235,8 @@ def main(host, user, password, database_name, sql_code_body: str):
     #print(db_info_json) 
  
     pydantic_script = process_models(db_info_json, database_name)
-    enpoints_script = create_api(pydantic_script, database_name)
+    endpoints_script = create_api(pydantic_script, database_name)
+
+    return endpoints_script
 
 main(host, user, password, database_name, sql_code_body)

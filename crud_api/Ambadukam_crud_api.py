@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from datetime import datetime, timedelta
 from decimal import Decimal
-from newdb_pydantic_models import categories, comments, postcategories, posts, tags, users
+from Ambadukam_pydantic_models import categories, comments, postcategories, posts, tags, users
 import mysql.connector
 app = FastAPI()
 
@@ -84,8 +84,8 @@ async def update_categories(category_id, name: str, IsActive: int):
 	'''
 	Edit categories 
 	Argument: 
-		name: str.
-		IsActive: int.
+		name: str
+		IsActive: int
 	'''
 
 	try:
@@ -193,11 +193,11 @@ async def update_comments(comment_id, post_id: int, user_id: int, comment: str, 
 	'''
 	Edit comments 
 	Argument: 
-		post_id: int.
-		user_id: int.
-		comment: str.
-		created_at: datetime.
-		IsActive: int.
+		post_id: int
+		user_id: int
+		comment: str
+		created_at: datetime
+		IsActive: int
 	'''
 
 	try:
@@ -302,8 +302,8 @@ async def update_postcategories(post_id, category_id: int, IsActive: int):
 	'''
 	Edit postcategories 
 	Argument: 
-		category_id: int.
-		IsActive: int.
+		category_id: int
+		IsActive: int
 	'''
 
 	try:
@@ -411,11 +411,11 @@ async def update_posts(post_id, user_id: int, title: str, content: str, created_
 	'''
 	Edit posts 
 	Argument: 
-		user_id: int.
-		title: str.
-		content: str.
-		created_at: datetime.
-		IsActive: int.
+		user_id: int
+		title: str
+		content: str
+		created_at: datetime
+		IsActive: int
 	'''
 
 	try:
@@ -521,9 +521,9 @@ async def update_tags(tag_id, post_id: int, tag_name: str, IsActive: int):
 	'''
 	Edit tags 
 	Argument: 
-		post_id: int.
-		tag_name: str.
-		IsActive: int.
+		post_id: int
+		tag_name: str
+		IsActive: int
 	'''
 
 	try:
@@ -631,11 +631,11 @@ async def update_users(user_id, username: str, email: str, password: str, create
 	'''
 	Edit users 
 	Argument: 
-		username: str.
-		email: str.
-		password: str.
-		created_at: datetime.
-		IsActive: int.
+		username: str
+		email: str
+		password: str
+		created_at: datetime
+		IsActive: int
 	'''
 
 	try:
